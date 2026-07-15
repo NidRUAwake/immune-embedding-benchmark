@@ -1,0 +1,107 @@
+{
+  "aliases": {
+    "sars-cov-2 spike": [
+      "spike glycoprotein",
+      "surface glycoprotein [severe acute respiratory syndrome coronavirus 2]",
+      "spike glycoprotein [severe acute respiratory syndrome coronavirus 2]",
+      "spike protein [severe acute respiratory syndrome coronavirus 2]",
+      "surface glycoprotein, partial [severe acute respiratory syndrome coronavirus 2]",
+      "sars-cov-2 s trimer",
+      "sars-cov-2 spike protein",
+      "surface glycoprotein [sars-cov-2]",
+      "surface glycoprotein [severe acute respiratory syndrome coronavirus 2 (sars-cov-2)]",
+      "s protein",
+      "spike surface glycoprotein [human coronavirus oc43]",
+      "spike protein [canine respiratory coronavirus]",
+      "sars-cov2",
+      "sars-cov2 omicron",
+      "sars-cov2 beta"
+    ],
+    "hiv-1 envelope": [
+      "envelope glycoprotein gp160",
+      "envelope glycoprotein gp160 [human immunodeficiency virus 1]",
+      "envelope glycoprotein [human immunodeficiency virus 1]",
+      "envelope glycoprotein gp120",
+      "gp120",
+      "gp160",
+      "envelope glycoprotein gp160 precursor",
+      "envelope glycoprotein precursor",
+      "hiv-1 env gp120/gp41",
+      "envelope glycoprotein gp160 [hiv-1]",
+      "env protein",
+      "hiv-1 env",
+      "envelope glycoprotein",
+      "envelope surface glycoprotein gp160, precursor"
+    ],
+    "plasmodium circumsporozoite protein": [
+      "circumsporozoite protein",
+      "circumsporozoite protein [plasmodium falciparum]",
+      "circumsporozoite protein precursor",
+      "circumsporozoite protein [plasmodium falciparum nf54]",
+      "circumsporozoite protein [plasmodium falciparum 3d7]",
+      "nanpnanpnanpnanpnanpnanpnanpnanpnanpnanp",
+      "nanpnanpnanpnanpnanpnanpnanpnanpnanpnanpnanpnanpnanpnanpnanpnanpnanpnanpnanpnanp",
+      "circumsporozoite protein [plasmodium falciparum it04]",
+      "kqpadgnpdpnanpnvdpnanp"
+    ],
+    "ebola virus glycoprotein": [
+      "virion spike glycoprotein precursor [zaire ebolavirus]",
+      "virion spike glycoprotein [zaire ebolavirus]",
+      "glycoprotein [zaire ebolavirus]",
+      "glycoprotein [ebola virus]",
+      "virion spike glycoprotein [ebola virus - mayinga, zaire, 1976]",
+      "zaire ebola glycoprotein gp1 and gp2"
+    ],
+    "influenza hemagglutinin": [
+      "hemagglutinin",
+      "ha",
+      "hemagglutinin [influenza a virus]",
+      "hemagglutinin [influenza b virus]",
+      "hemagglutinin h1",
+      "hemagglutinin h3"
+    ],
+    "influenza neuraminidase": [
+      "neuraminidase",
+      "na",
+      "neuraminidase [influenza a virus]"
+    ],
+    "rsv fusion protein": [
+      "fusion glycoprotein",
+      "fusion protein [human respiratory syncytial virus]",
+      "fusion protein [human respiratory syncytial virus a2]",
+      "fusion glycoprotein f0 precursor"
+    ],
+    "hepatitis c virus polyprotein": [
+      "polyprotein",
+      "genome polyprotein",
+      "polyprotein [hepatitis c virus]"
+    ],
+    "lysozyme": [
+      "lysozyme c",
+      "hen egg-white lysozyme",
+      "lysozyme"
+    ],
+    "measles virus hemagglutinin": [
+      "hemagglutinin [measles virus]",
+      "hemagglutinin protein"
+    ],
+    "tetanus toxin": [
+      "tetanus toxin",
+      "tetanus toxoid"
+    ],
+    "diphtheria toxin": [
+      "diphtheria toxin",
+      "diphtheria toxoid"
+    ],
+    "alpha-d-gal": [
+      "alpha-d-galp-(1->3)-beta-d-galp-(1->4)-d-glcpnac-yl group"
+    ]
+  },
+  "non_protein_labels": [
+    "glycolipid",
+    "lipopolysaccharide",
+    "lipid",
+    "carbohydrate",
+    "alpha-d-gal"
+  ]
+}

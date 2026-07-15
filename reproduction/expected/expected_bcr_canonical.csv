@@ -1,0 +1,10 @@
+# Canonical POST-is_legit-filter, expected-R@1, 20-seed per-seed-mean (BCR).
+# Source: outputs/phase3_filtered_tie_v2/bcr (= the manuscript's BCR tree). Recomputed by
+# run_reproduction_canonical.py via the same build_pilot_slice + clone_aware_split + retrieval_metrics.
+# Note: per-seed-mean differs from the manuscript's nested-bootstrap means by <1pp
+# (e.g. BLOSUM L1 perseed 0.455 vs nested 0.459); both are reported in Table 1/S1 context.
+model,level,recall1_perseed_mean
+levenshtein,level1,0.4403
+levenshtein,level4,0.4983
+blosum62,level1,0.4550
+blosum62,level4,0.5128

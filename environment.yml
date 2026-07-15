@@ -1,0 +1,67 @@
+name: embedding_benchmark_v1
+# Human-readable environment spec. For a byte-exact environment use environment.lock.yml.
+# Versions below are the ones used to produce the manuscript results (see REPRODUCIBILITY.md).
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      # --- core scientific stack ---
+      - numpy==1.26.4
+      - pandas==2.2.1
+      - scipy==1.11.1
+      - scikit-learn==1.2.2
+      - statsmodels==0.14.1        # TOST equivalence test, Hedges' g
+      - joblib==1.3.1
+      # --- deep learning / PLM ---
+      - torch==2.0.1
+      - transformers==4.31.0       # loads ESM2 + TCR-BERT (wukevin/tcr-bert) from HuggingFace
+      # AbLang and AntiBERTy: the HuggingFace repos (msc-bioinformatics/AbLang, neulab/antiberty)
+      # are NO LONGER available, so the canonical antibody-PLM embeddings come from the pip
+      # packages below (their bundled weights), loaded offline via
+      # `scripts/generate_embeddings.py --local-files-only`. These are REQUIRED to reproduce the
+      # AbLang/AntiBERTy rows (BCR + SAbDab); run.py cannot fetch them live anymore.
+      - ablang==0.3.1              # AbLang heavy-chain embeddings (BCR/SAbDab, all levels)
+      - antiberty==0.1.3           # AntiBERTy embeddings (BCR/SAbDab)
+      # --- sequence alignment / distance baselines ---
+      - parasail==1.3.4            # BLOSUM62 Smith-Waterman (parasail.sw_striped_16, gap 10/1)
+      - rapidfuzz==3.6.1           # CANONICAL Levenshtein baseline + clone-aware clustering (split.py)
+      - tcrdist3==0.2.2            # TCRdist / BCRdist baseline  <-- was missing; required for the paired/TCR distance results
+      # The standalone Levenshtein/python-levenshtein packages are NOT used by the core
+      # retrieval loop (rapidfuzz above is the canonical edit distance) -- only by legacy/
+      # exploratory scripts; kept so those still run.
+      - Levenshtein==0.23.0        # auxiliary/legacy only
+      - python-levenshtein==0.23.0 # auxiliary/legacy only
+      # --- immunoinformatics ---
+      # NOTE: ANARCI is NOT a pip line -- `pip install anarci==1.3` fails (not on PyPI;
+      #       the only PyPI release, 2026.2.13.2, pulls numpy>=2 and breaks this stack).
+      #       Install it via conda/bioconda or source instead -- see the block below.
+      - biopython==1.81            # data-prep + auxiliary analyses (SHM / HIV-BLAST / contact
+                                   # residues); NOT used by the core retrieval loop, so not
+                                   # needed to reproduce headline numbers from committed inputs
+      # --- visualisation / utilities ---
+      - matplotlib==3.7.1
+      - seaborn==0.12.2
+      - umap-learn==0.5.3          # UMAP diagnostic figures
+      - tqdm==4.65.0
+      - pyyaml==6.0.1
+
+# === NOT pip-installable; install separately (see REPRODUCIBILITY.md "External tools") ===
+#   * ANARCI (IMGT CDR numbering) -- DATA-PREP ONLY (the benchmark reads the committed
+#       *_anarci.tsv inputs; ANARCI is needed only to regenerate inputs from raw).
+#       Install with:   conda install -c bioconda anarci hmmer
+#                       (bioconda offers 2021.02.04 / 2024.05.21; IMGT numbering identical
+#                        to the source v1.3 used for the paper)
+#       or from source: github.com/oxpig/ANARCI  (its setup.py reports version 1.3)
+#   * NCBI BLAST+  (blastp, makeblastdb)  -- second alignment baseline (Supplementary Table S9)
+#   * HMMER3 + IMGT germline databases    -- required by ANARCI (bundled by the bioconda pkg)
+#
+# === Optional, NOT needed to reproduce the manuscript ===
+#   * ablang2            -- legacy only (scripts/analysis/benchmark_competitors.py). The canonical
+#                           AbLang embeddings come from the `ablang` pip package above, NOT ablang2.
+#   * fair-esm==1.0.3    -- present in the locked env but the canonical pipeline loads ESM2 via transformers.
+#   * the ESM-C model    -- used only for the S2.3 / Fig S2B sensitivity analyses (separate ESM-C package).

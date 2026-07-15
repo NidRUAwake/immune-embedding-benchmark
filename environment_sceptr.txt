@@ -1,0 +1,25 @@
+# Isolated environment for SCEPTR embedding GENERATION ONLY (scratch/run_sceptr_embed.py).
+#
+# Why separate: SCEPTR (Nagano et al., 2025) pins torch 2.12 + numpy 2.x, which are INCOMPATIBLE
+# with the main `embedding_benchmark_v1` conda env (they clobber the ESM2 / parasail / tcrdist3
+# stack used for everything else). Do NOT install these into the conda env. This venv's ONLY job
+# is to turn a TCR table into a SCEPTR embedding `.npy`; that `.npy` is then scored in the MAIN
+# env by `scratch/run_sceptr_unified_eval.py` exactly like every other method (it needs tcrdist3,
+# which lives in the main env, not here).
+#
+# You do NOT need this env to reproduce the numbers if you use the released SCEPTR `.npy` caches
+# (Zenodo / outputs/embeddings/). It is only required to regenerate the embeddings from scratch.
+#
+# Create and use (Python 3.10):
+#   python3.10 -m venv sceptr_env
+#   sceptr_env/bin/pip install -r environment_sceptr.txt
+#   sceptr_env/bin/python scratch/run_sceptr_embed.py <input.csv> <out.npy> <out_meta.json> <dataset>
+#
+# Exact versions used to produce the manuscript SCEPTR embeddings (Python 3.10.13):
+--extra-index-url https://download.pytorch.org/whl/cpu
+sceptr==1.2.0
+tidytcells==2.2.1
+torch==2.12.1+cpu
+libtcrlm==1.1.3
+numpy==2.2.6
+pandas==2.3.3
