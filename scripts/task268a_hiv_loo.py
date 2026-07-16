@@ -29,7 +29,23 @@ from benchmark.data import (
 from benchmark.split import clone_aware_split_fast
 from benchmark.embeddings import OfflineEmbedder
 from benchmark.evaluate import retrieval_metrics, compute_similarity_matrix
-from run_v34_experiments import MockArgs  # build_bcr_frame superseded by build_pilot_slice
+# Canonical BCR slice config (inlined; previously imported from the exploratory
+# run_v34_experiments.py, which is not part of the canonical/data-availability package).
+class MockArgs:
+    include_bcr = True
+    include_tcr = False
+    include_sabdab = False
+    bcr_file = "raw/iedb/bcr_singlechain_vh.tsv"  # canonical input (post-ANARCI single-chain VH)
+    bcr_label_col = "Epitope_Source Molecule"
+    human_only = True
+    top_labels = 10
+    min_label_count = 14
+    max_per_label_bcr = 150
+    shared_labels = True
+    batch_size = 32
+    local_files_only = False
+    offline_dir = None
+    pooling = "mean"
 
 # Known HIV-1 bNAb HCDR3 reference sequences -- CANONICAL set, identical to the
 # run_task256_s.py audit (24 bNAbs across CD4bs / V1V2 / V3-glycan / MPER / outer-domain

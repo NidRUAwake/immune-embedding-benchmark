@@ -63,6 +63,7 @@ Three BCR trees and how they relate (367 §24): `phase3_grand_slam_tie_v2/bcr` =
 | Fig 3 (BCR ladder) | `fig3_bcr_ladder_corrected.py` | (hardcoded post-filter nested values) |
 | figS1 (V-gene agreement) | `figS1_vgene_agreement_corrected.py` | |
 | figS3 (CDR3-length-stratified) | `analysis/figS3_length_postfilter.py` (data) + `figS3_length_corrected.py` (plot) | filtered slices |
+| figS5 (CDR3 AA composition vs UniProt) | `figS5_composition.py` | descriptive control, no embeddings (extracted from `scratch/recompute_supp_figs.py`) |
 | figS6 (McPAS scaling) | `figS6_mcpas_scaling.py` | |
 | figS7 (per-antigen gap) | `figS9_per_antigen_corrected.py` (writes figS7.pdf) | |
 | figS8 (L3.5 trajectory) | `figS10_l35_corrected.py` (writes figS8.pdf) | |
