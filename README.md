@@ -1,51 +1,62 @@
 # Clone-aware immune-receptor embedding benchmark — code
 
-Source code for the benchmark comparing protein language models against sequence alignment for
-antigen-specificity retrieval of immune receptors, under clone-aware data splitting. This package
-contains only the **canonical** scripts that produce the manuscript numbers (see `CODE_GUIDE.md`).
+Benchmarking **protein language models against sequence alignment** for
+antigen-specificity retrieval of B- and T-cell receptors, under **clone-aware**
+data splitting. This repository holds only the **canonical scripts that produce
+the manuscript numbers** — begin at [`CODE_GUIDE.md`](CODE_GUIDE.md).
 
 ## Quick start
+
 ```bash
 conda env create -f environment.yml && conda activate embedding_benchmark_v1
 export OFFLINE_EMBED_STRICT=1
-python reproduction/run_reproduction_canonical.py            # self-contained PASS check (no embeddings needed)
-# strict 20-seed numeric check: python reproduction/run_reproduction_canonical.py --seeds 20
+
+python reproduction/run_reproduction_canonical.py             # self-contained PASS check (no embeddings needed)
+python reproduction/run_reproduction_canonical.py --seeds 20  # strict 20-seed numeric check
 ```
-Run commands from the package root (some drivers add `scripts/` to the path relative to CWD).
+
+Run every command **from the repository root** (drivers add `scripts/` to the path relative to the working directory).
+
+## Repository map
+
+| Path | Contents |
+|---|---|
+| [**`CODE_GUIDE.md`**](CODE_GUIDE.md) | **Start here** — canonical artifact → script → data-tree map + reviewer checklist |
+| `reproduction/` | Self-contained reproduction harness (verified PASS) |
+| `scripts/benchmark/` | Core library — clone-aware `split.py`, `data.py`, `embeddings.py`, `evaluate.py` (expected-R@1), `run.py` |
+| `scripts/analysis/`, `scripts/task*`, `scratch/` | Canonical drivers, one per manuscript artifact |
+| `scripts/analysis/revision_models/` | Revision models — TCR2vec/CDR3vec, AntiBERTa2/IgBert, CoV-AbDab task ([details](scripts/analysis/revision_models/README.md)) |
+| `scripts/fig*.py` | Figure generators |
+| `download_scripts/` | Fetch raw databases (IEDB / VDJdb / SAbDab / McPAS) |
+| `results/Table_S1_Full_CI.csv` | Released master results table |
+| `REPRODUCIBILITY.md` | Environment, per-number reproduction, data availability |
 
 ## Environments
-- **Main** (`environment.yml` / `environment.lock.yml`, conda env `embedding_benchmark_v1`): runs
-  everything — data prep, all alignment/PLM methods, ESM2, tcrdist3, and even the SCEPTR *scoring*
-  step (`scratch/run_sceptr_unified_eval.py` only loads SCEPTR `.npy` and uses tcrdist3, both here).
-- **SCEPTR embedding env** (`environment_sceptr.txt`, isolated pip venv): needed ONLY to regenerate
-  SCEPTR embeddings (`scratch/run_sceptr_embed.py`). SCEPTR pins torch 2.12 + numpy 2.x, which are
-  incompatible with the main env, so it is kept separate. Skip it if you use the released `.npy`.
-- **TCR2vec embedding env** (`environment.revision.yml`, isolated): needed ONLY to regenerate
-  TCR2vec/CDR3vec embeddings (`scripts/analysis/revision_models/*_embed.py`); pins torch 1.13 +
-  tape-proteins, incompatible with the main env. AntiBERTa2's tokenizer needs `rjieba` (already in
-  `environment.yml`). Scoring runs in the main env. See `scripts/analysis/revision_models/README.md`.
 
-## Layout
-- `scripts/benchmark/` — core library: `data.py` (slices + strict-20AA `is_legit` filter),
-  `split.py` (clone-aware split), `embeddings.py`, `evaluate.py` (order-independent expected-R@1), `run.py`.
-- `scripts/analysis/`, `scripts/task*`, `scratch/*.py` — the canonical drivers (one per manuscript artifact).
-- `scratch/run_sceptr_embed.py` (+ `environment_sceptr.txt`) → `scratch/run_sceptr_unified_eval.py` — SCEPTR (Sec 3.5).
-- `scripts/analysis/revision_models/` — revision receptor-specific models (Sec 3.5, Supp Table S15/S16,
-  Note S2.7): TCR2vec/CDR3vec (+ small/TCRdb/paired), AntiBERTa2/IgBert, and the CoV-AbDab neutralization
-  task; see its README for external weights + isolated envs (`environment.revision.yml`).
-- `scripts/fig*.py` — figure generators.
-- `reproduction/` — canonical reproduction harness (verified PASS).
-- **`CODE_GUIDE.md` — START HERE**: canonical artifact→script→tree map + reviewer checklist.
-- `REPRODUCIBILITY.md` — environment, per-number reproduction, Data Availability.
-- `download_scripts/` — fetch raw databases (IEDB/VDJdb/SAbDab/McPAS).
-- `results/Table_S1_Full_CI.csv` — released master results table.
+Everything runs in the **main** conda env, except two *embedding* steps whose
+dependencies conflict with it and run in isolated envs. **All scoring uses the main env** —
+so you can skip the isolated envs entirely if you use the released embedding `.npy` files.
+
+| Environment | File | Used for |
+|---|---|---|
+| **Main** (`embedding_benchmark_v1`) | `environment.yml` / `.lock.yml` | Everything: data prep, alignment, ESM2, tcrdist3, **all scoring** |
+| SCEPTR embedding | `environment_sceptr.txt` | Only `scratch/run_sceptr_embed.py` (pins torch 2.12 / numpy 2.x) |
+| TCR2vec embedding | `environment.revision.yml` | Only `scripts/analysis/revision_models/*_embed.py` (pins torch 1.13 + tape-proteins) |
 
 ## Data (not bundled)
+
 Raw inputs and the precomputed embedding cache are obtained separately (size / redistribution):
-raw data via `download_scripts/` (+ preprocessing); embeddings via the Zenodo data package
-(see REPRODUCIBILITY.md). Always run with `OFFLINE_EMBED_STRICT=1` so a missing embedding fails hard.
+
+- **Raw databases** — `download_scripts/` (+ preprocessing)
+- **Embeddings** — the Zenodo data package (see [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md))
+
+Always keep `OFFLINE_EMBED_STRICT=1` set, so a missing embedding **fails hard** instead of silently recomputing.
 
 ## Full results table (Table 1 / S1)
-Two-tree aggregation — BCR/McPAS from the post-`is_legit`-filter tree, VDJdb/SAbDab from the
-grand-slam tree: `python scripts/analysis/build_master_nested_ci.py`
-→ `outputs/reports/master_nested_ci_20seeds_postfilter.csv`.
+
+```bash
+python scripts/analysis/build_master_nested_ci.py   # -> outputs/reports/master_nested_ci_20seeds_postfilter.csv
+```
+
+Two-tree aggregation: BCR/McPAS from the post-`is_legit`-filter tree; VDJdb/SAbDab from the grand-slam tree.
+
