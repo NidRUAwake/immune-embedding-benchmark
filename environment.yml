@@ -14,7 +14,7 @@ dependencies:
       - numpy==1.26.4
       - pandas==2.2.1
       - scipy==1.11.1
-      - scikit-learn==1.2.2
+      - scikit-learn==1.7.2        # matches the verified run env (co-installs with numpy 1.26.4)
       - statsmodels==0.14.1        # TOST equivalence test, Hedges' g
       - joblib==1.3.1
       # --- deep learning / PLM ---
@@ -27,6 +27,13 @@ dependencies:
       # AbLang/AntiBERTy rows (BCR + SAbDab); run.py cannot fetch them live anymore.
       - ablang==0.3.1              # AbLang heavy-chain embeddings (BCR/SAbDab, all levels)
       - antiberty==0.1.3           # AntiBERTy embeddings (BCR/SAbDab)
+      # AntiBERTa2 (alchemab/antiberta2, a RoFormer model) and IgBert (Exscientia/IgBert)
+      # were added in revision and load live via transformers==4.31.0 above; AntiBERTa2's
+      # RoFormer tokenizer additionally imports rjieba (Supplementary Table S15/S16, Note S2.7).
+      - rjieba==0.2.1              # RoFormer tokenizer dependency for AntiBERTa2 (revision)
+      # NOTE: TCR2vec/CDR3vec (Jiang 2023) and SCEPTR run in SEPARATE isolated environments
+      # because their torch/numpy pins conflict with this env -- see environment.revision.yml
+      # and scripts/analysis/revision_models/README.md.
       # --- sequence alignment / distance baselines ---
       - parasail==1.3.4            # BLOSUM62 Smith-Waterman (parasail.sw_striped_16, gap 10/1)
       - rapidfuzz==3.6.1           # CANONICAL Levenshtein baseline + clone-aware clustering (split.py)

@@ -1,0 +1,37 @@
+# Isolated environment for the TCR2vec / CDR3vec receptor-specific TCR models
+# (Jiang et al., 2023), added during peer-review revision.
+#
+# WHY SEPARATE: these models use the TAPE IUPAC tokenizer (tape-proteins), which
+# pins torch/numpy versions that conflict with the main environment.yml
+# (torch==2.0.1 / numpy==1.26.4). They therefore run in this isolated env.
+#
+# SCOPE: only the *embedding* step uses this env --
+#   scripts/analysis/revision_models/{tcr2vec_embed, cdr3vec_embed, small_embed,
+#   tcrdb_embed, paired_embed, tcr2vec_validate}.py
+# The *scoring* step (tcr2vec_score.py, paired_score.py) reads the resulting
+# offline .npy embeddings and runs in the MAIN environment.yml env.
+#
+# Model weights (not bundled): see scripts/analysis/revision_models/README.md
+# ($TCR2VEC_WEIGHTS layout). SCEPTR (Nagano 2025) has its own separate env.
+#
+# TCR2vec PACKAGE (the model code providing tcr2vec.model / tcr2vec.utils /
+# tcr2vec.cdr3_to_full_seq, which the *_embed.py scripts import) is NOT on PyPI --
+# after creating this env, install it from the authors' repository, e.g.
+#   git clone https://github.com/jiangdada1221/TCR2vec && pip install -e ./TCR2vec
+# (or add the clone to PYTHONPATH).
+name: embedding_benchmark_tcr2vec
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10.13
+  - pip
+  - pip:
+      - tape-proteins==0.5     # TCR2vec/CDR3vec tokenizer + model backbone
+      - torch==1.13.1
+      - numpy==1.23.5
+      - pandas==2.3.3
+      - scipy==1.15.3
+      - scikit-learn==1.7.2
+      - tqdm==4.70.0
+      - boto3==1.43.90         # pulled in by tape-proteins
+      - filelock==3.32.6

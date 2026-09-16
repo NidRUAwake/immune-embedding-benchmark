@@ -20,12 +20,19 @@ Run commands from the package root (some drivers add `scripts/` to the path rela
 - **SCEPTR embedding env** (`environment_sceptr.txt`, isolated pip venv): needed ONLY to regenerate
   SCEPTR embeddings (`scratch/run_sceptr_embed.py`). SCEPTR pins torch 2.12 + numpy 2.x, which are
   incompatible with the main env, so it is kept separate. Skip it if you use the released `.npy`.
+- **TCR2vec embedding env** (`environment.revision.yml`, isolated): needed ONLY to regenerate
+  TCR2vec/CDR3vec embeddings (`scripts/analysis/revision_models/*_embed.py`); pins torch 1.13 +
+  tape-proteins, incompatible with the main env. AntiBERTa2's tokenizer needs `rjieba` (already in
+  `environment.yml`). Scoring runs in the main env. See `scripts/analysis/revision_models/README.md`.
 
 ## Layout
 - `scripts/benchmark/` — core library: `data.py` (slices + strict-20AA `is_legit` filter),
   `split.py` (clone-aware split), `embeddings.py`, `evaluate.py` (order-independent expected-R@1), `run.py`.
 - `scripts/analysis/`, `scripts/task*`, `scratch/*.py` — the canonical drivers (one per manuscript artifact).
 - `scratch/run_sceptr_embed.py` (+ `environment_sceptr.txt`) → `scratch/run_sceptr_unified_eval.py` — SCEPTR (Sec 3.5).
+- `scripts/analysis/revision_models/` — revision receptor-specific models (Sec 3.5, Supp Table S15/S16,
+  Note S2.7): TCR2vec/CDR3vec (+ small/TCRdb/paired), AntiBERTa2/IgBert, and the CoV-AbDab neutralization
+  task; see its README for external weights + isolated envs (`environment.revision.yml`).
 - `scripts/fig*.py` — figure generators.
 - `reproduction/` — canonical reproduction harness (verified PASS).
 - **`CODE_GUIDE.md` — START HERE**: canonical artifact→script→tree map + reviewer checklist.

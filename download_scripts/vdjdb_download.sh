@@ -18,12 +18,12 @@ VDJDB_RELEASE="2025-12-29"
 mkdir -p raw/vdjdb
 
 echo "Downloading VDJdb release ${VDJDB_RELEASE} ..."
-curl -L -o /tmp/vdjdb-${VDJDB_RELEASE}.zip \
+curl -L -o ${TMPDIR:-/tmp}/vdjdb-${VDJDB_RELEASE}.zip \
   "https://github.com/antigenomics/vdjdb-db/releases/download/${VDJDB_RELEASE}/vdjdb-${VDJDB_RELEASE}.zip"
 
 echo "Extracting vdjdb_full.txt (the FULL export with paired alpha/beta columns"
 echo "the pipeline needs — NOT the slim vdjdb.txt) ..."
-unzip -o -j /tmp/vdjdb-${VDJDB_RELEASE}.zip vdjdb_full.txt -d raw/vdjdb/
+unzip -o -j ${TMPDIR:-/tmp}/vdjdb-${VDJDB_RELEASE}.zip vdjdb_full.txt -d raw/vdjdb/
 
 echo "Done. raw/vdjdb/vdjdb_full.txt"
 echo "Verify: md5sum raw/vdjdb/vdjdb_full.txt  # expect 4ab97ea73b42a04afeaf1957d3bf9894"

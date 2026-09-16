@@ -13,8 +13,14 @@ MODEL_ALIASES = {
     "esm2-3b": "facebook/esm2_t36_3B_UR50D",
     "antiberty": "neulab/antiberty",
     "ablang": "msc-bioinformatics/AbLang",
-    "tcr-bert": "wukevin/tcr-bert"
+    "tcr-bert": "wukevin/tcr-bert",
+    "antiberta2": "alchemab/antiberta2",
+    "igbert": "Exscientia/IgBert",
 }
+
+# Models whose tokenizers expect amino acids as whitespace-separated single tokens
+# (a solid string otherwise collapses to [CLS,UNK,SEP]). Same fix as tcr-bert.
+WHITESPACE_TOKENIZED = ("tcr-bert", "igbert", "antiberta2")
 
 AA_VOCAB = "ACDEFGHIKLMNPQRSTVWY"
 
@@ -105,7 +111,8 @@ class TransformerEmbedder(Embedder):
         # TCR-BERT (wukevin/tcr-bert) tokenizer splits on whitespace, expecting
         # amino acids to be space-separated. Solid strings tokenize to [CLS,UNK,SEP].
         # See discussions/319, 320 for the diagnosis.
-        if "tcr-bert" in getattr(self.tokenizer, "name_or_path", "").lower():
+        tok_name = getattr(self.tokenizer, "name_or_path", "").lower()
+        if any(m in tok_name for m in WHITESPACE_TOKENIZED):
             sequences = [
                 " ".join(list(str(s).upper().replace(" ", ""))) if s else s
                 for s in sequences
@@ -113,7 +120,7 @@ class TransformerEmbedder(Embedder):
         chunks = []
         for start in range(0, len(sequences), self.batch_size):
             batch_seqs = sequences[start:start + self.batch_size]
-            max_len = 64 if "tcr-bert" in getattr(self.tokenizer, "name_or_path", "").lower() else 1024
+            max_len = 64 if "tcr-bert" in tok_name else 1024
             inputs = self.tokenizer(batch_seqs, return_tensors="pt", padding=True, truncation=True, max_length=max_len)
             inputs = {k: v.to(self.device) for k, v in inputs.items()}
             

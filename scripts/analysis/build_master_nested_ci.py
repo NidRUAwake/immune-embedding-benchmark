@@ -12,7 +12,7 @@ would aggregate BCR/McPAS from the STALE pre-filter tree (BCR L1 esm2 0.373 inst
 Output: outputs/reports/master_nested_ci_20seeds_postfilter.csv (matches manuscript Table 1/S1).
 Reproducible: seeded (`--bootstrap-seed 42`). Run with OFFLINE_EMBED_STRICT=1 upstream."""
 from __future__ import annotations
-import subprocess, sys
+import subprocess, sys, tempfile
 from pathlib import Path
 import pandas as pd
 
@@ -26,7 +26,7 @@ OUT = ROOT / "outputs/reports/master_nested_ci_20seeds_postfilter.csv"
 def run(base, datasets, out):
     subprocess.run([PY, str(NB), "--base-dir", base, "--datasets", datasets,
                     "--bootstrap-seed", "42", "--output-nested", str(out),
-                    "--output-comparison", "/tmp/_nb_cmp.csv"], check=True, cwd=ROOT)
+                    "--output-comparison", f"{tempfile.gettempdir()}/_nb_cmp.csv"], check=True, cwd=ROOT)
 
 def main():
     run("outputs/phase3_filtered_tie_v2", "bcr,mcpas", TMP_POST)       # post-filter BCR/McPAS
