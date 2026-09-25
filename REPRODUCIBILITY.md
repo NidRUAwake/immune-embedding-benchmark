@@ -106,6 +106,17 @@ transformers, not through the `ablang` or `antiberty` pip packages.
 
 Weights download on first use into `$HF_HOME` (about 8 GB for the full ESM2 family).
 
+Three models are not loaded through Hugging Face and need their own setup:
+
+| Model | Where the weights come from | Scripts |
+|---|---|---|
+| ESM-C-300M | the `esm` package (`ESMC.from_pretrained("esmc_300m")`), in its own environment | `scratch/export_esmc_canonical_sequences.py` -> `scratch/external_task_esmc_canonical/extract_esmc.py` (GPU) -> `scratch/run_esmc_canonical_20seed.py` (scoring, main env) |
+| SCEPTR | the `sceptr` pip package, in its own venv | `scratch/run_sceptr_embed.py` -> `scratch/run_sceptr_unified_eval.py` |
+| TCR2vec / CDR3vec | checkpoints from the TCR2vec repository | `scripts/analysis/revision_models/` (see its README for the layout) |
+
+All three follow the same pattern: generate embeddings in an isolated environment,
+then score them in the main environment like every other model.
+
 ## Data
 
 We do not redistribute the raw database dumps. Each database has its own license and
@@ -117,15 +128,25 @@ terms, so we point to the original source and the exact version instead.
 | VDJdb (TCR) | AGPL-3.0 | 2025-12-29 release | `download_scripts/vdjdb_download.sh` |
 | SAbDab | CC-BY | downloaded 2026-05-05 | `download_scripts/sabdab_download.sh` (manual) |
 | McPAS-TCR | per site terms | standardized 2026-05-19 | `download_scripts/mcpas_download.sh` (manual, Shiny app) |
+| CoV-AbDab | free for academic use | 2024-02-08 release | `download_scripts/covabdab_download.sh` |
 | IMGT IGHV/IGHJ germline | IMGT academic terms | reference sequences | IMGT/GENE-DB, for the germline-reversion test |
 
-Only VDJdb can be fetched byte-for-byte from its source today (its release asset is
-pinned; `vdjdb_full.txt` has md5 `4ab97ea73b42a04afeaf1957d3bf9894`). IEDB, SAbDab and
-McPAS-TCR publish only their current release, and McPAS-TCR now requires clicking
-through a web app, so an exact byte match with our snapshot is not guaranteed. For
-those three, reproduce from the **license-permitted processed inputs** we distribute,
-and verify them with the published md5 checksums. Because every reported number is a
-20-seed aggregate, small input drift does not change any conclusion.
+CoV-AbDab supplies the zero-shot BCR-native task (SARS-CoV-2 neutralization
+discrimination, Supplementary Note S2.7 and Table S16). The analysis scripts read it
+through `$COVABDAB_CSV`, which defaults to `data/covabdab.csv`.
+
+**Two of the five sources are byte-reproducible from their official servers:**
+
+- **VDJdb** publishes pinned release assets; `vdjdb_full.txt` has md5
+  `4ab97ea73b42a04afeaf1957d3bf9894`.
+- **CoV-AbDab** serves the 2024-02-08 release as a direct CSV; md5
+  `4bcbcec3f35bc0cfb72535bbcf3dff08`. Both download scripts check the md5 for you.
+
+IEDB, SAbDab and McPAS-TCR publish only their current release, and McPAS-TCR now
+requires clicking through a web app, so an exact byte match with our snapshot is not
+guaranteed. For those three, reproduce from the **license-permitted processed inputs**
+we distribute and verify them with the published md5 checksums. Because every reported
+number is a 20-seed aggregate, small input drift does not change any conclusion.
 
 > **Preprocessing scripts are not included in this package.** It ships the canonical
 > benchmark and analysis code only. Converting a raw download into a canonical input

@@ -47,7 +47,11 @@ git clone https://github.com/jiangdada1221/TCR2vec && pip install -e ./TCR2vec
 ```
 
 **2 · Model weights** → `$TCR2VEC_WEIGHTS` (default `weights/tcr2vec_weights/`).
-Download the TCR2vec/CDR3vec checkpoints (Jiang et al.) and lay them out as:
+The checkpoints are not on PyPI or Hugging Face. Download them from the links in the
+TCR2vec repository README (https://github.com/jiangdada1221/TCR2vec), which hosts
+five pretrained models: the full-length `TCR2vec_120`, the CDR3-only `CDR3vec_120`,
+their 128-dimensional `_small` counterparts, and a TCR2vec pretrained on TCRdb.
+Unzip each one and lay them out as:
 
 ```
 $TCR2VEC_WEIGHTS/
