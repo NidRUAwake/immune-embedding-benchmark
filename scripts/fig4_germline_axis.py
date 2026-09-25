@@ -22,7 +22,7 @@ germline framework is added at L4 -- the visual signature of the germline shortc
 Per the figure standard: NO on-plot text/numbers/annotations -- regime definitions,
 values, the shortcut reading, the HIV "different antibody set" caveat and the
 "illustrative; full evidence in Table 1/Sec 3.5" note all live in the caption.
-Bars are coloured by who leads (alignment blue / parity grey / PLM vermillion).
+Bars are colored by who leads (alignment blue / parity gray / PLM vermillion).
 Okabe-Ito palette (figstyle), no figure title, 300 dpi, editable fonts.
 """
 import matplotlib as mpl
@@ -36,7 +36,7 @@ figstyle.apply()
 
 ALIGN = figstyle.ALIGN          # alignment leads (blue)
 PLM = figstyle.PLM              # PLM leads (vermillion)
-GREY = figstyle.OKABE["grey"]   # parity
+GREY = figstyle.OKABE["gray"]   # parity
 
 labels = ["CDR3", "Paratope\n(all CDRs)", "Full variable\ndomain", "HIV-1\n(full domain)"]
 delta = [-0.102, -0.093, -0.008, +0.212]

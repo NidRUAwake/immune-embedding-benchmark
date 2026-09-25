@@ -44,7 +44,7 @@ out = Path("outputs/manuscript_submission/figures"); (out / "png").mkdir(parents
 fig, ax = plt.subplots(figsize=(7.5, 4)); x = np.arange(20); bw = 0.4
 ax.bar(x - bw / 2, [freq[a] for a in AAs], bw, color=figstyle.OKABE["blue"],
        edgecolor="black", lw=0.4, label="IEDB BCR CDR3")
-ax.bar(x + bw / 2, [uni[a] for a in AAs], bw, color=figstyle.OKABE["grey"],
+ax.bar(x + bw / 2, [uni[a] for a in AAs], bw, color=figstyle.OKABE["gray"],
        edgecolor="black", lw=0.4, label="UniProt background")
 ax.set_xticks(x); ax.set_xticklabels(AAs, fontsize=9); ax.set_xlabel("Amino acid", fontsize=10.5)
 ax.set_ylabel("Frequency", fontsize=11); ax.legend(fontsize=9, frameon=False)

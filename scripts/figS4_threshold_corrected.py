@@ -10,7 +10,7 @@ from pathlib import Path
 import figstyle; figstyle.apply()
 d=pd.read_csv("outputs/reports/threshold_sweep_tie_v2.csv")
 fig,ax=plt.subplots(figsize=(6.4,4.4))
-# colour = method, line style = level, marker shape distinct per series (filled L1 / open L4)
+# color = method, line style = level, marker shape distinct per series (filled L1 / open L4)
 # so the legend unambiguously distinguishes all four series. SD shown as a light band.
 series=[("blosum62","level1","BLOSUM62 CDR3","-","o",True),
         ("blosum62","level4","BLOSUM62 full domain","--","s",False),

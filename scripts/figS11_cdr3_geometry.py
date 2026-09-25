@@ -20,7 +20,7 @@ figstyle.apply()
 
 ALIGN = figstyle.ALIGN          # BLOSUM reference (blue)
 PLM = figstyle.PLM              # whitened (vermillion)
-GREY = figstyle.OKABE["grey"]   # raw
+GREY = figstyle.OKABE["gray"]   # raw
 
 models = ["ESM2-150M", "ESM2-650M", "ESM2-3B", "ESM-C-300m"]
 raw = [0.353, 0.369, 0.344, 0.374]
